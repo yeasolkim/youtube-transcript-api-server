@@ -37,7 +37,7 @@ def get_transcript():
         # 한글 자막 우선, 없으면 자동 감지
         transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
         try:
-            transcript = transcript_list.find_transcript(['ko'])
+            transcript = transcript_list.find_transcript(['ko', 'a.ko'])
         except NoTranscriptFound:
             transcript = transcript_list.find_transcript(['en', 'a.en'])
         transcript_data = transcript.fetch()

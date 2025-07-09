@@ -30,7 +30,7 @@ proxies = [
 # 유튜브 URL에서 video_id 추출 함수
 def extract_video_id(url):
     # 짧은 URL
-    match = re.match(r"https?://youtu.be/([\\w-]+)", url)
+    match = re.match(r"https?://youtu.be/([\w-]+)", url)
     if match:
         return match.group(1)
     # 긴 URL

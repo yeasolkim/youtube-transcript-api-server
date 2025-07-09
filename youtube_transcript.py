@@ -40,13 +40,16 @@ def extract_video_id(url):
         v_list = qs.get("v", [None])
         return v_list[0] if v_list else None
     return None
+
 @app.route('/transcript', methods=['GET'])
 def get_transcript():
     url = request.args.get('url')
-    if not url:
+    print(f"DEBUG: url = {url} (type: {type(url)})")
+    if not url or not isinstance(url, str):
         return jsonify({"error": "url 파라미터가 필요합니다."}), 400
     video_id = extract_video_id(url)
-    if not video_id:
+    print(f"DEBUG: video_id = {video_id} (type: {type(video_id)})")
+    if not video_id or not isinstance(video_id, str):
         return jsonify({"error": "유효하지 않은 유튜브 링크입니다."}), 400
     try:
         # 한글 자막 우선, 없으면 자동 감지

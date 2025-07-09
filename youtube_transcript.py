@@ -10,9 +10,24 @@ import re
 
 app = Flask(__name__)
 
-# 유튜브 URL에서 video_id 추출 함수
-# 예: https://youtu.be/xxxx 또는 https://www.youtube.com/watch?v=xxxx
+# 프록시 리스트 (주신 리스트 반영)
+proxies = [
+    'http://123.140.146.57:5031',
+    'http://138.68.60.8:80',
+    'http://3.109.62.30:717',
+    'http://4.156.78.45:80',
+    'http://72.10.160.91:18749',
+    'http://123.140.146.2:5031',
+    'http://43.216.214.221:4289',
+    'http://205.198.65.77:80',
+    'http://123.141.181.84:5031',
+    'http://43.216.143.123:9008',
+    'http://42.118.0.3:16000',
+    'http://27.79.212.60:16000',
+    'http://23.247.136.254:80'
+]
 
+# 유튜브 URL에서 video_id 추출 함수
 def extract_video_id(url):
     # 짧은 URL
     match = re.match(r"https?://youtu.be/([\w-]+)", url)
@@ -35,7 +50,7 @@ def get_transcript():
         return jsonify({"error": "유효하지 않은 유튜브 링크입니다."}), 400
     try:
         # 한글 자막 우선, 없으면 자동 감지
-        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id, proxies=proxies)
         try:
             transcript = transcript_list.find_transcript(['ko', 'a.ko'])
         except NoTranscriptFound:
@@ -52,4 +67,4 @@ def get_transcript():
         return jsonify({"error": f"자막 추출 중 오류: {str(e)}"}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001) 
+    app.run(host='0.0.0.0', port=5001)

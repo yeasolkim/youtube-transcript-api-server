@@ -30,16 +30,16 @@ proxies = [
 # 유튜브 URL에서 video_id 추출 함수
 def extract_video_id(url):
     # 짧은 URL
-    match = re.match(r"https?://youtu.be/([\w-]+)", url)
+    match = re.match(r"https?://youtu.be/([\\w-]+)", url)
     if match:
         return match.group(1)
     # 긴 URL
     parsed = urlparse(url)
     if parsed.hostname in ["www.youtube.com", "youtube.com"]:
         qs = parse_qs(parsed.query)
-        return qs.get("v", [None])[0]
+        v_list = qs.get("v", [None])
+        return v_list[0] if v_list else None
     return None
-
 @app.route('/transcript', methods=['GET'])
 def get_transcript():
     url = request.args.get('url')
